@@ -4,34 +4,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class Main {
-
-  public static String  getRequest(Socket client) throws IOException {
-    DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
-    char datatype = in.readChar();
-    int length = in.readInt();
-    System.out.println("Parsing");
-    System.out.println(datatype);
-    System.out.println(length);
-
-      byte[] messageByte = new byte[length];
-      boolean end = false;
-      StringBuilder dataString  = new StringBuilder(length);
-      int totalBytesRead = 0;
-      while(!end){
-        int currentBytesRead = in.read(messageByte);
-        totalBytesRead += currentBytesRead;
-        if(totalBytesRead <= length){
-          dataString.append(new String(messageByte,0, currentBytesRead, StandardCharsets.UTF_8));
-        }else{
-          dataString.append((new String(messageByte,0,length-totalBytesRead+currentBytesRead)));
-        }
-        if(totalBytesRead>=length){
-          end = true;
-        }
-      }
-      return dataString.toString();
-
-  }
   public static void main(String[] args) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     System.out.println("Logs from your program will appear here!");
@@ -56,6 +28,7 @@ public class Main {
        if(req != null && !req.isEmpty()){
          path = req.split(" ")[1];
        }
+       System.out.println("Req  : " + req);
        System.out.println("Path : "+path);
 
        String ok = "HTTP/1.1 200 OK\r\n\r\n";
