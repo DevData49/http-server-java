@@ -23,37 +23,25 @@ public class Main {
        BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
        String req = in.readLine();
 
-       String path = "";
-       if(req != null && !req.isEmpty()){
-         path = req.split(" ")[1];
-       }
+       String path = req.split(" ")[1];;
 
-       System.out.println("Req  : " + req);
-       System.out.println("Path : "+path);
 
-       String ok = "HTTP/1.1 200 OK\r\n";
+
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
-       if(path.isEmpty() || path.equals("/")){
-         ok+="\r\n";
-         client.getOutputStream().write(ok.getBytes());
+       if(path.equals("/")){
+         client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+       }else if (path.startsWith("/echo/")){
+            String msg = path.split("/")[2];
+            String body = String.format(
+
+                    "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
+
+                    msg.length(), msg);
+
+            client.getOutputStream().write(body.getBytes());
+
        }else{
-         String[] paths = path.split("/");
-         for(String p : paths){
-           System.out.println(p);
-         }
-         if(paths.length < 2 || !paths[1].equals("echo")){
            client.getOutputStream().write(notFound.getBytes());
-         }else{
-            String body = "";
-            if(paths.length>=3){
-              body = paths[2];
-            }
-            ok += "Content-Type: text/plain\r\n";
-            ok += "Content-Length: "+body.length()+"\r\n\r\n";
-            ok += body;
-            System.out.println(ok);
-            client.getOutputStream().write(ok.getBytes());
-         }
        }
 
        client.close();
