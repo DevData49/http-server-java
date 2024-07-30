@@ -48,8 +48,8 @@ public class Main {
               body = paths[2];
             }
             ok += "Content-Type: text/plain\r\n";
-            ok += "Content-Length: "+body.length()+"\r\n";
-            ok += body+"\r\n";
+            ok += "Content-Length: "+body.length()+"\r\n\r\n";
+            ok += body;
             System.out.println(ok);
             client.getOutputStream().write(ok.getBytes());
          }
