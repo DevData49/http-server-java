@@ -31,22 +31,30 @@ public class Main {
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
        if( path.equals("/")){
          client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-       }else{
-
-            String[] msgs = path.split("/");
-           if (msgs.length < 2 || !msgs[1].equals("echo")) {
-
-               client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-
-           } else {
+       }else if(path.equals("/user-agent")){
+           String line;
+           while(!(line = in.readLine()).startsWith("User Agent:")){
+               String value = line.split(": ")[1];
                String body = String.format(
 
                        "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
 
-                       msgs[2].length(), msgs[2]);
+                       value.length(), value);
 
                client.getOutputStream().write(body.getBytes());
            }
+       }else if (path.startsWith("/echo/")){
+            String msg = path.split("/")[2];
+            String body = String.format(
+
+                    "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
+
+                    msg.length(), msg);
+
+            client.getOutputStream().write(body.getBytes());
+
+       }else{
+           client.getOutputStream().write(notFound.getBytes());
        }
 
        client.close();
