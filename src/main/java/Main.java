@@ -29,20 +29,24 @@ public class Main {
 
 
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
-       if(path.length() == 1){
+       if( path.equals("/")){
          client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-       }else if (path.startsWith("/echo/")){
-            String msg = path.split("/")[2];
-            String body = String.format(
-
-                    "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
-
-                    msg.length(), msg);
-
-            client.getOutputStream().write(body.getBytes());
-
        }else{
-           client.getOutputStream().write(notFound.getBytes());
+
+            String[] msgs = path.split("/");
+           if (msgs.length < 2 || !msgs[1].equals("echo")) {
+
+               client.getOutputStream().write(notFound.getBytes());
+
+           } else {
+               String body = String.format(
+
+                       "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
+
+                       msgs[2].length(), msgs[2]);
+
+               client.getOutputStream().write(body.getBytes());
+           }
        }
 
        client.close();
