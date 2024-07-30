@@ -36,7 +36,7 @@ public class Main {
             String[] msgs = path.split("/");
            if (msgs.length < 2 || !msgs[1].equals("echo")) {
 
-               client.getOutputStream().write(notFound.getBytes());
+               client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
 
            } else {
                String body = String.format(
