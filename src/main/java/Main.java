@@ -22,22 +22,15 @@ public class Main {
        String ok = "HTTP/1.1 200 OK\r\n\r\n";
        String notFound = "HTTP/1.1 400 Not Found\r\n\r\n";
 
-       ObjectInputStream ois= new ObjectInputStream(client.getInputStream());
-       String req = (String) ois.readObject();
-       String path = req.split(" ")[1];
+       DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
+       String req = in.readUTF();
        System.out.println(req);
-       System.out.println(path);
-       if(path.equals("/"))
-         client.getOutputStream().write(ok.getBytes());
-       else
-         client.getOutputStream().write(notFound.getBytes());
-       ois.close();
+
+       client.getOutputStream().write(ok.getBytes());
        client.close();
        serverSocket.close();
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
-     } catch (ClassNotFoundException e) {
-         throw new RuntimeException(e);
      }
   }
 }
