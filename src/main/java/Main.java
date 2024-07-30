@@ -31,7 +31,7 @@ public class Main {
        System.out.println("Req  : " + req);
        System.out.println("Path : "+path);
 
-       String ok = "HTTP/1.1 200 OK\r\n\r\n";
+       String ok = "HTTP/1.1 200 OK\r\n";
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
        if(path.isEmpty()){
          client.getOutputStream().write(notFound.getBytes());
@@ -47,8 +47,8 @@ public class Main {
             if(paths.length>=3){
               body = paths[2];
             }
-            ok += "Content-Type: text/plain\r\n\r\n";
-            ok += "Content-Length: "+body.length()+"\r\n\r\n";
+            ok += "Content-Type: text/plain\r\n";
+            ok += "Content-Length: "+body.length()+"\r\n";
             ok += body;
             System.out.println(ok);
             client.getOutputStream().write(ok.getBytes());
