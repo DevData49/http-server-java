@@ -9,7 +9,9 @@ public class Main {
     DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
     char datatype = in.readChar();
     int length = in.readInt();
-
+    System.out.println("Parsing");
+    System.out.println(datatype);
+    System.out.println(length);
     if(datatype == 's'){
       byte[] messageByte = new byte[length];
       boolean end = false;
