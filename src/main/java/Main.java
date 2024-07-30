@@ -47,10 +47,11 @@ public class Main {
             if(paths.length>=3){
               body = paths[2];
             }
-            ok += "Content-Type: text/plain\r\n\r\n";
-            ok += "Content-Length: "+body.length()+"\r\n\r\n";
-            ok += body;
             client.getOutputStream().write(ok.getBytes());
+            client.getOutputStream().write("Content-Type: text/plain\r\n\r\n".getBytes());
+            ok = "Content-Length: "+body.length()+"\r\n\r\n";
+            client.getOutputStream().write(ok.getBytes());
+            client.getOutputStream().write(body.getBytes());
          }
        }
 
