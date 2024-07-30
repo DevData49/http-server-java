@@ -35,13 +35,13 @@ public class Main {
            String line;
            while(!(line = in.readLine()).startsWith("User Agent:")){
                System.out.println(line);
-               String value = line.split(": ")[1];
-               System.out.println(value +" " + value.length());
+               String msg = line.split(": ")[1];
+               System.out.println(msg +" " + msg.length());
                String body = String.format(
 
                        "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
 
-                       value.length(), value);
+                       msg.length(), msg);
 
                client.getOutputStream().write(body.getBytes());
            }
