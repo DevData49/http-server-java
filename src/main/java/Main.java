@@ -25,6 +25,7 @@ public class Main {
 
        String path = req.split(" ")[1];;
 
+       System.out.println(path);
 
 
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
