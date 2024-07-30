@@ -33,7 +33,7 @@ public class Main {
 
        String ok = "HTTP/1.1 200 OK\r\n";
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
-       if(path.isEmpty()){
+       if(path.isEmpty() || path.equals("/")){
          ok+="\r\n";
          client.getOutputStream().write(ok.getBytes());
        }else{
@@ -42,8 +42,7 @@ public class Main {
            System.out.println(p);
          }
          if(paths.length < 2 || !paths[1].equals("echo")){
-           ok+="\r\n";
-           client.getOutputStream().write(ok.getBytes());
+           client.getOutputStream().write(notFound.getBytes());
          }else{
             String body = "";
             if(paths.length>=3){
