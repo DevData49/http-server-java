@@ -50,20 +50,22 @@ public class Main {
 
        String req = getRequest(client);
 
+       System.out.println("Req : " + req);
        String path = "";
        if(!req.isEmpty()){
          path = req.split(" ")[1];
        }
+       System.out.println("Path : "+path);
 
        String ok = "HTTP/1.1 200 OK\r\n\r\n";
-       String notFound = "HTTP/1.1 400 Not Found\r\n\r\n";
+       String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
 
        if(path.equals("/")){
          client.getOutputStream().write(ok.getBytes());
        }else{
          client.getOutputStream().write(notFound.getBytes());
        }
-       
+
        client.close();
        serverSocket.close();
      } catch (IOException e) {
