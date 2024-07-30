@@ -34,14 +34,14 @@ public class Main {
        String ok = "HTTP/1.1 200 OK\r\n";
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
        if(path.isEmpty()){
-         client.getOutputStream().write(notFound.getBytes());
+         client.getOutputStream().write(ok.getBytes());
        }else{
          String[] paths = path.split("/");
          for(String p : paths){
            System.out.println(p);
          }
          if(paths.length < 2 || !paths[1].equals("echo")){
-           client.getOutputStream().write(notFound.getBytes());
+           client.getOutputStream().write(ok.getBytes());
          }else{
             String body = "";
             if(paths.length>=3){
