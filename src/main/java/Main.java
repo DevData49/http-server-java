@@ -21,7 +21,6 @@ public class Main {
        System.out.println("accepted new connection");
        String msg = "HTTP/1.1 200 OK\\r\\n\\r\\n";
        client.getOutputStream().write(msg.getBytes());
-       client.close();
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
      }
