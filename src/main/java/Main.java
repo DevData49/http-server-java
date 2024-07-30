@@ -1,5 +1,4 @@
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -19,10 +18,24 @@ public class Main {
 
        Socket client = serverSocket.accept(); // Wait for connection from client.
        System.out.println("accepted new connection");
-       String res = "HTTP/1.1 200 OK\r\n\r\n";
-       client.getOutputStream().write(res.getBytes());
+
+       String ok = "HTTP/1.1 200 OK\r\n\r\n";
+       String notFound = "HTTP/1.1 400 Not Found\r\n\r\n";
+
+       ObjectInputStream ois= new ObjectInputStream(client.getInputStream());
+       String req = (String) ois.readObject();
+       String path = req.split(" ")[1];
+       if(path.equals("/"))
+         client.getOutputStream().write(ok.getBytes());
+       else
+         client.getOutputStream().write(notFound.getBytes());
+       ois.close();
+       client.close();
+       serverSocket.close();
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
+     } catch (ClassNotFoundException e) {
+         throw new RuntimeException(e);
      }
   }
 }
