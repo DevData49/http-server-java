@@ -25,6 +25,8 @@ public class Main {
        ObjectInputStream ois= new ObjectInputStream(client.getInputStream());
        String req = (String) ois.readObject();
        String path = req.split(" ")[1];
+       System.out.println(req);
+       System.out.println(path);
        if(path.equals("/"))
          client.getOutputStream().write(ok.getBytes());
        else
