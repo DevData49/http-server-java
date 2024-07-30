@@ -12,7 +12,7 @@ public class Main {
     System.out.println("Parsing");
     System.out.println(datatype);
     System.out.println(length);
-    if(datatype == 's'){
+
       byte[] messageByte = new byte[length];
       boolean end = false;
       StringBuilder dataString  = new StringBuilder(length);
@@ -30,9 +30,7 @@ public class Main {
         }
       }
       return dataString.toString();
-    }else{
-      return "";
-    }
+    
   }
   public static void main(String[] args) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
