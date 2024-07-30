@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
   public static void main(String[] args) {
@@ -16,62 +18,24 @@ public class Main {
        // Since the tester restarts your program quite often, setting SO_REUSEADDR
        // ensures that we don't run into 'Address already in use' errors
        serverSocket.setReuseAddress(true);
-
-       Socket client = serverSocket.accept(); // Wait for connection from client.
-       System.out.println("accepted new connection");
-
-       BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-       String req = in.readLine();
-
-
-       if(req != null){
-           String path = req.split(" ")[1];;
-
-           System.out.println(path);
-
-
-           String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
-           if( path.equals("/")){
-               client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-           }else if(path.equals("/user-agent")){
-               String line;
-               while(!(line = in.readLine()).isEmpty()){
-                   if(line.startsWith("User-Agent")){
-                       break;
-                   }
-               }
-
-               String msg = "";
-               if(!line.isEmpty()){
-                   msg = line.split(": ")[1];
-               }
-               String body = String.format(
-
-                       "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
-
-                       msg.length(), msg);
-
-               client.getOutputStream().write(body.getBytes());
-           }else if (path.startsWith("/echo/")){
-               String msg = path.split("/")[2];
-               String body = String.format(
-
-                       "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
-
-                       msg.length(), msg);
-
-               client.getOutputStream().write(body.getBytes());
-
-           }else{
-               client.getOutputStream().write(notFound.getBytes());
-           }
-       } else{
-           client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-       }
-       client.close();
-       serverSocket.close();
+        while(true){
+            Socket client = serverSocket.accept(); // Wait for connection from client.
+            System.out.println("accepted new connection");
+            new
+        }
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
+     }
+      ;
+     try(ExecutorService executorService = Executors.newCachedThreadPool();
+         ServerSocket serverSocket = new ServerSocket(4221)){
+        serverSocket.setReuseAddress(true);
+        while(true){
+            Socket client = serverSocket.accept();
+            executorService.submit(new HttpHandler(client));
+        }
+     } catch (IOException e) {
+         throw new RuntimeException(e);
      }
   }
 }
