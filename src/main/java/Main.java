@@ -49,7 +49,7 @@ public class Main {
             }
             ok += "Content-Type: text/plain\r\n";
             ok += "Content-Length: "+body.length()+"\r\n";
-            ok += body;
+            ok += body+"\r\n";
             System.out.println(ok);
             client.getOutputStream().write(ok.getBytes());
          }
