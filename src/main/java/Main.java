@@ -37,6 +37,9 @@ public class Main {
          client.getOutputStream().write(notFound.getBytes());
        }else{
          String[] paths = path.split("/");
+         for(String p : paths){
+           System.out.println(p);
+         }
          if(paths.length < 2 || !paths[1].equals("echo")){
            client.getOutputStream().write(notFound.getBytes());
          }else{
