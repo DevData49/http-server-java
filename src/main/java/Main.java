@@ -33,10 +33,16 @@ public class Main {
          client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
        }else if(path.equals("/user-agent")){
            String line;
-           while(!(line = in.readLine()).startsWith("User Agent:"));
-           System.out.println(line);
-           String msg = line.split(": ")[1];
-           System.out.println(msg +" " + msg.length());
+           while(!(line = in.readLine()).isEmpty()){
+               if(line.startsWith("User-Agent")){
+                   break;
+               }
+           }
+
+           String msg = "";
+           if(!line.isEmpty()){
+               msg = line.split(": ")[1];
+           }
            String body = String.format(
 
                    "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
