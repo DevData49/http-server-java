@@ -29,7 +29,7 @@ public class Main {
 
 
        String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
-       if(path.equals("/")){
+       if(path.length() == 1){
          client.getOutputStream().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
        }else if (path.startsWith("/echo/")){
             String msg = path.split("/")[2];
