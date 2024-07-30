@@ -34,6 +34,7 @@ public class Main {
        }else if(path.equals("/user-agent")){
            String line;
            while(!(line = in.readLine()).startsWith("User Agent:")){
+               System.out.println(line);
                String value = line.split(": ")[1];
                System.out.println(value);
                String body = String.format(
