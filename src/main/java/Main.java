@@ -30,7 +30,7 @@ public class Main {
         }
       }
       return dataString.toString();
-    
+
   }
   public static void main(String[] args) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -48,11 +48,12 @@ public class Main {
        Socket client = serverSocket.accept(); // Wait for connection from client.
        System.out.println("accepted new connection");
 
-       String req = getRequest(client);
+       BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-       System.out.println("Req : " + req);
+       String req = in.readLine();
+
        String path = "";
-       if(!req.isEmpty()){
+       if(req != null && !req.isEmpty()){
          path = req.split(" ")[1];
        }
        System.out.println("Path : "+path);
