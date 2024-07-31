@@ -1,4 +1,4 @@
-package devdata.Handlers;
+package devdata.handlers.get;
 
 import devdata.http.IRequestHandler;
 import devdata.http.Request;

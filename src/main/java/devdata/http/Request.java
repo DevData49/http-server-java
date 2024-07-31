@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class Request {
 
+    private String method;
+    private String body;
     private String path;
 
     private final Map<String, String> headers;
@@ -21,6 +23,8 @@ public class Request {
         this.clientSocket = socket;
         path = "";
         headers = new HashMap<>();
+        method = "";
+        body = "";
     }
     public void parse() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -29,12 +33,19 @@ public class Request {
         if(nextLine == null){
             return;
         }
-        path = nextLine.split(" ")[1];
+        String[] status = nextLine.split(" ");
+        method = status[0];
+        path = status[1];
 
         while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
             String[] splits = nextLine.split(": ");
             headers.put(splits[0], splits[1]);
         }
+        StringBuilder builder = new StringBuilder();
+        while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
+            builder.append(nextLine);
+        }
+        body = builder.toString();
     }
 
     public String getPath() {
@@ -47,5 +58,13 @@ public class Request {
 
     public void write(String msg) throws IOException {
         clientSocket.getOutputStream().write(msg.getBytes());
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getBody() {
+        return body;
     }
 }

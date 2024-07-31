@@ -1,9 +1,8 @@
-package devdata.Handlers;
+package devdata.handlers.get;
 
 import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,5 +1,6 @@
 
-import devdata.Handlers.*;
+import devdata.handlers.get.*;
+import devdata.handlers.post.FilePostHandler;
 import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
@@ -21,23 +22,30 @@ public class ConnectionHandler implements Runnable{
         try {
             Request request = new Request(clientSocket);
             request.parse();
-            IRequestHandler[] handlers = new IRequestHandler[]{
-                    new EmptyHandler(),
-                    new UserAgentHandler(),
-                    new EchoHandler(),
-                    new FileHandler(args),
-                    new NotFoundHandler()
-            };
+            IRequestHandler[] handlers = getHandlers(request);
 
             for(IRequestHandler handler:handlers){
                 boolean isHandled = handler.handle(request);
                 if(isHandled){
-                    System.out.println(handler);
-                    break;
+                    return;
                 }
             }
+            new NotFoundHandler().handle(request);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private IRequestHandler[] getHandlers(Request request) {
+        if(request.getMethod().equals("POST"))
+            return new IRequestHandler[]{new FilePostHandler(args)};
+        else
+            return new IRequestHandler[]{
+                    new EmptyHandler(),
+                    new UserAgentHandler(),
+                    new EchoHandler(),
+                    new FileHandler(args),
+
+            };
     }
 }
