@@ -8,7 +8,8 @@ import java.io.IOException;
 public class UserAgentHandler implements IHttpHandler {
     @Override
     public boolean handle(Request request) throws IOException {
-        if(request.getPath().isEmpty() || request.getPath().equals("/user-agent")){
+        if(request.getPath().isEmpty() || !request.getPath().equals("/user-agent")){
+            System.out.println("Handled by user-agent");
             return false;
         }
         String msg = request.getHeaders().getOrDefault("User-Agent", "");

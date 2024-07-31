@@ -8,6 +8,7 @@ import java.io.IOException;
 public class NotFoundHandler implements IHttpHandler {
     @Override
     public boolean handle(Request request) throws IOException {
+        System.out.println("Not Found handler");
         request.write("HTTP/1.1 404 Not Found\r\n\r\n");
         return true;
     }

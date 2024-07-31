@@ -31,6 +31,7 @@ public class ConnectionHandler implements Runnable{
             for(IHttpHandler handler:handlers){
                 boolean isHandled = handler.handle(request);
                 if(isHandled){
+                    System.out.println(handler);
                     break;
                 }
             }

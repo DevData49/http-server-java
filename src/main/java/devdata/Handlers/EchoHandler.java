@@ -11,6 +11,7 @@ public class EchoHandler implements IHttpHandler {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/echo/")){
             return false;
         }
+        System.out.println("Handled by EchoHanlder");
         String msg = request.getPath().split("/")[2];
         String body = String.format(
 
