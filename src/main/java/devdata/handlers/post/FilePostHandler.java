@@ -22,6 +22,7 @@ public class FilePostHandler implements IRequestHandler {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/files/")){
             return false;
         }
+        System.out.println("Handled by File post handler");
         String filename = request.getPath().split("/")[2];
         if(filename.isEmpty()){
             return false;
