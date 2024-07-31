@@ -14,12 +14,14 @@ public class FileHandler implements IRequestHandler {
 
     @Override
     public boolean handle(Request request) throws IOException {
-        if(request.getPath().isEmpty() || !request.getPath().startsWith("/file/")){
+        if(request.getPath().isEmpty() || !request.getPath().startsWith("/files/")){
             return false;
         }
+        System.out.println("Handled by fileHandler");
         for(String arg : args){
             System.out.println(arg);
         }
+
         return false;
     }
 }

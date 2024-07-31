@@ -1,8 +1,5 @@
 
-import devdata.Handlers.EchoHandler;
-import devdata.Handlers.EmptyHandler;
-import devdata.Handlers.NotFoundHandler;
-import devdata.Handlers.UserAgentHandler;
+import devdata.Handlers.*;
 import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
@@ -28,6 +25,7 @@ public class ConnectionHandler implements Runnable{
                     new EmptyHandler(),
                     new UserAgentHandler(),
                     new EchoHandler(),
+                    new FileHandler(args),
                     new NotFoundHandler()
             };
 
