@@ -13,7 +13,7 @@ public class FilePostHandler implements IRequestHandler {
 
     public FilePostHandler(String[] args) {
         if(args.length>=2){
-            this.fileDir = args[2];
+            this.fileDir = args[1];
         }
     }
 
