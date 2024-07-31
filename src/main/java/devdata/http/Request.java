@@ -56,7 +56,9 @@ public class Request {
             int bytesRead;
             while(offset<contentLength && (bytesRead = inputStream.read(bodyBytes,offset, contentLength-offset)) != -1){
                 offset += bytesRead;
+                System.out.println(offset);
             }
+            
             body = new String(bodyBytes, StandardCharsets.UTF_8);
         }
         System.out.println("Body : " + body);
