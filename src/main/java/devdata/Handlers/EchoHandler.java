@@ -1,11 +1,11 @@
 package devdata.Handlers;
 
-import devdata.http.IHttpHandler;
+import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
 import java.io.IOException;
 
-public class EchoHandler implements IHttpHandler {
+public class EchoHandler implements IRequestHandler {
     @Override
     public boolean handle(Request request) throws IOException {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/echo/")){

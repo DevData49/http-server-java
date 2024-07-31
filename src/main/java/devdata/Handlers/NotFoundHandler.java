@@ -1,11 +1,11 @@
 package devdata.Handlers;
 
-import devdata.http.IHttpHandler;
+import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
 import java.io.IOException;
 
-public class NotFoundHandler implements IHttpHandler {
+public class NotFoundHandler implements IRequestHandler {
     @Override
     public boolean handle(Request request) throws IOException {
         System.out.println("Not Found handler");

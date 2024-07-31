@@ -3,15 +3,18 @@ import devdata.Handlers.EchoHandler;
 import devdata.Handlers.EmptyHandler;
 import devdata.Handlers.NotFoundHandler;
 import devdata.Handlers.UserAgentHandler;
-import devdata.http.IHttpHandler;
+import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
 import java.net.Socket;
 
 public class ConnectionHandler implements Runnable{
     private final Socket clientSocket;
-    public ConnectionHandler(Socket clientSocket) {
+    private final String[] args;
+    public ConnectionHandler(Socket clientSocket, String[] args)
+    {
         this.clientSocket = clientSocket;
+        this.args = args;
     }
     public Socket getClientSocket() {
         return clientSocket;
@@ -21,14 +24,14 @@ public class ConnectionHandler implements Runnable{
         try {
             Request request = new Request(clientSocket);
             request.parse();
-            IHttpHandler[] handlers = new IHttpHandler[]{
+            IRequestHandler[] handlers = new IRequestHandler[]{
                     new EmptyHandler(),
                     new UserAgentHandler(),
                     new EchoHandler(),
                     new NotFoundHandler()
             };
 
-            for(IHttpHandler handler:handlers){
+            for(IRequestHandler handler:handlers){
                 boolean isHandled = handler.handle(request);
                 if(isHandled){
                     System.out.println(handler);

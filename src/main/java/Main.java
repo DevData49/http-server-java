@@ -13,7 +13,7 @@ public class Main {
         serverSocket.setReuseAddress(true);
         while(true){
             Socket client = serverSocket.accept();
-            executorService.submit(new ConnectionHandler(client));
+            executorService.submit(new ConnectionHandler(client, args));
         }
      } catch (IOException e) {
          throw new RuntimeException(e);
