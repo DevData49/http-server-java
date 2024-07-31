@@ -34,18 +34,22 @@ public class Request {
             return;
         }
         String[] status = nextLine.split(" ");
+        System.out.println("Status line :" + nextLine);
         method = status[0];
         path = status[1];
-
+        System.out.println("method : " + method);
+        System.out.println("path   : " + path);
         while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
             String[] splits = nextLine.split(": ");
             headers.put(splits[0], splits[1]);
+            System.out.println(splits[0] + " : "+splits[1]);
         }
         StringBuilder builder = new StringBuilder();
         while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
             builder.append(nextLine);
         }
         body = builder.toString();
+        System.out.println("Body : " + body);
     }
 
     public String getPath() {
