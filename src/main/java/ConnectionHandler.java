@@ -5,6 +5,7 @@ import devdata.http.IRequestHandler;
 import devdata.http.Request;
 
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ConnectionHandler implements Runnable{
     private final Socket clientSocket;
@@ -22,8 +23,8 @@ public class ConnectionHandler implements Runnable{
         try {
             Request request = new Request(clientSocket);
             request.parse();
-            IRequestHandler[] handlers = getHandlers(request);
-
+            IRequestHandler[] handlers = getHandlers(request,args);
+            System.out.println(Arrays.toString(handlers));
             for(IRequestHandler handler:handlers){
                 System.out.println(handler);
                 boolean isHandled = handler.handle(request);
@@ -37,7 +38,7 @@ public class ConnectionHandler implements Runnable{
         }
     }
 
-    private IRequestHandler[] getHandlers(Request request) {
+    private IRequestHandler[] getHandlers(Request request,String[] args) {
         if(request.getMethod().equals("POST"))
             return new IRequestHandler[]{new FilePostHandler(args)};
         else
