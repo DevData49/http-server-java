@@ -44,12 +44,17 @@ public class Request {
             headers.put(splits[0], splits[1]);
             System.out.println(splits[0] + " : "+splits[1]);
         }
-        StringBuilder builder = new StringBuilder();
-        while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
-            System.out.println(nextLine);
-            builder.append(nextLine);
+
+        int contentLength = Integer.parseInt(headers.getOrDefault("Content-Length","0"));
+        if(contentLength > 0){
+            byte[] bodyBytes = new byte[contentLength];
+            int offset = 0;
+            int bytesRead;
+            while(offset<contentLength && (bytesRead = clientSocket.getInputStream().read(bodyBytes,offset, contentLength-offset)) != -1){
+                offset += bytesRead;
+            }
+            body = new String(bodyBytes);
         }
-        body = builder.toString();
         System.out.println("Body : " + body);
     }
 
