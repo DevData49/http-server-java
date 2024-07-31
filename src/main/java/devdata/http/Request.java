@@ -46,6 +46,7 @@ public class Request {
         }
         StringBuilder builder = new StringBuilder();
         while ((nextLine = reader.readLine()) != null && !nextLine.isEmpty()){
+            System.out.println(nextLine);
             builder.append(nextLine);
         }
         body = builder.toString();
