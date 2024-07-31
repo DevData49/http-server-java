@@ -25,7 +25,7 @@ public class FileHandler implements IRequestHandler {
         }
         System.out.println("Handled by fileHandler");
         System.out.println("FileDir :"+ this.filedir);
-        String filename = request.getPath().split("/")[1];
+        String filename = request.getPath().split("/")[2];
         Path filepath = Paths.get(filedir, filename);
 
         if(!Files.exists(filepath)) {
