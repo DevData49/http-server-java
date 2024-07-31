@@ -34,7 +34,7 @@ public class FileHandler implements IRequestHandler {
         }
         String contents = Files.readString(filepath);
         String body = String.format(
-                "HTTP1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s",
+                "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s",
                 contents.length(),contents);
         request.write(body);
         return true;
