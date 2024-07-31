@@ -1,14 +1,16 @@
 package devdata.handlers.get;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
+import devdata.utils.Compress;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileHandler implements IRequestHandler {
+public class FileHandler implements IHttpHandler {
     String filedir = "";
     String[] args;
     public FileHandler(String[] args) {
@@ -19,7 +21,7 @@ public class FileHandler implements IRequestHandler {
     }
 
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/files/")){
             return false;
         }
@@ -33,20 +35,22 @@ public class FileHandler implements IRequestHandler {
             return false;
         }
         String contents = Files.readString(filepath);
-//        String body = String.format(
-//                "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s",
-//                contents.length(),contents);
 
-        String body = "HTTP/1.1 200 OK\r\n";
-        body += "Content-Type: application/octet-stream\r\n";
+        response.setStatus(200)
+                .setHeader("Content-Type","application/octet-stream");
         String encodings = request.getHeaders().get("Accept-Encoding");
         if(encodings != null && encodings.contains("gzip")){
-            body += "Content-Encoding: gzip\r\n";
-        }
-        body += "Content-Length: "+contents.length()+"\r\n\r\n";
+            byte[] compressed = Compress.compress(contents);
+            response.setHeader("Content-Encoding", "gzip")
+                    .setHeader("Content-Length",""+compressed.length)
+                    .setByteBody(compressed);
 
-        body += contents;
-        request.write(body);
+        }else{
+            response.setHeader("Content-Length",""+contents.length())
+                    .setBody(contents);
+        }
+
+        response.send();
         return true;
     }
 }

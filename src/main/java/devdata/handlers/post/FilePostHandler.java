@@ -1,14 +1,15 @@
 package devdata.handlers.post;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FilePostHandler implements IRequestHandler {
+public class FilePostHandler implements IHttpHandler {
     String fileDir = "";
 
     public FilePostHandler(String[] args) {
@@ -18,7 +19,7 @@ public class FilePostHandler implements IRequestHandler {
     }
 
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/files/")){
             return false;
         }

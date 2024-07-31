@@ -1,34 +1,36 @@
 package devdata.handlers.get;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
+import devdata.utils.Compress;
 
 import java.io.IOException;
 
-public class UserAgentHandler implements IRequestHandler {
+public class UserAgentHandler implements IHttpHandler {
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         if(request.getPath().isEmpty() || !request.getPath().equals("/user-agent")){
             return false;
         }
         System.out.println("Handled by user-agent");
         String msg = request.getHeaders().getOrDefault("User-Agent", "");
-//      String body;
-//        = String.format(
-//
-//                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
-//
-//                msg.length(), msg);
-        String body = "HTTP/1.1 200 OK\r\n";
+
+        response.setStatus(200)
+                .setHeader("Content-Type", "text/plain");
 
         String encodings = request.getHeaders().get("Accept-Encoding");
         if(encodings != null && encodings.contains("gzip")){
-            body += "Content-Encoding: gzip\r\n";
+            byte[] compressed = Compress.compress(msg);
+            response.setHeader("Content-Encoding","gzip")
+                    .setHeader("Content-Length",""+compressed.length)
+                    .setByteBody(compressed);
+
+        }else{
+            response.setHeader("Content-Length",""+msg.length())
+                    .setBody(msg);
         }
-        body += "Content-Type: text/plain\r\n";
-        body += "Content-Length: "+msg.length()+"\r\n\r\n";
-        body += msg;
-        request.write(body);
+        response.send();
         return true;
     }
 }

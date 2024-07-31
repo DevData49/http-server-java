@@ -1,16 +1,17 @@
 package devdata.handlers.get;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
 
 import java.io.IOException;
 
-public class EmptyHandler implements IRequestHandler {
+public class EmptyHandler implements IHttpHandler {
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         if(request.getPath().isEmpty() || request.getPath().equals("/")){
             System.out.println("Handled by EmptyHandler");
-            request.write("HTTP/1.1 200 OK\r\n\r\n");
+            response.setStatus(200).send();
             return true;
         }
         return false;

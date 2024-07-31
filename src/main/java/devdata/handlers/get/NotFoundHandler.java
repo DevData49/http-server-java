@@ -1,15 +1,16 @@
 package devdata.handlers.get;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
 
 import java.io.IOException;
 
-public class NotFoundHandler implements IRequestHandler {
+public class NotFoundHandler implements IHttpHandler {
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         System.out.println("Not Found handler");
-        request.write("HTTP/1.1 404 Not Found\r\n\r\n");
+        response.setStatus(404).send();
         return true;
     }
 }

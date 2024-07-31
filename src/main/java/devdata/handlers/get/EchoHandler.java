@@ -1,29 +1,37 @@
 package devdata.handlers.get;
 
-import devdata.http.IRequestHandler;
+import devdata.http.IHttpHandler;
 import devdata.http.Request;
+import devdata.http.Response;
+import devdata.utils.Compress;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-public class EchoHandler implements IRequestHandler {
+public class EchoHandler implements IHttpHandler {
     @Override
-    public boolean handle(Request request) throws IOException {
+    public boolean handle(Request request, Response response) throws IOException {
         if(request.getPath().isEmpty() || !request.getPath().startsWith("/echo/")){
             return false;
         }
         System.out.println("Handled by EchoHanlder");
         String msg = request.getPath().split("/")[2];
-        String body = "HTTP/1.1 200 OK\r\n";
-        body += "Content-Type: text/plain\r\n";
+
+        response.setStatus(200)
+                .setHeader("Content-Type", "text/plain");
 
         String encodings = request.getHeaders().get("Accept-Encoding");
         if(encodings != null && encodings.contains("gzip")){
-            body += "Content-Encoding: gzip\r\n";
-        }
-        body += "Content-Length: "+msg.length()+"\r\n\r\n";
-        body += msg;
+            byte[] compressed = Compress.compress(msg);
+            response.setHeader("Content-Encoding","gzip")
+                    .setHeader("Content-Length",""+compressed.length)
+                    .setByteBody(compressed);
 
-        request.write(body);
+        }else{
+            response.setHeader("Content-Length",""+msg.length())
+                    .setBody(msg);
+        }
+        response.send();
         return true;
     }
 }
