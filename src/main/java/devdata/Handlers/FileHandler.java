@@ -10,6 +10,9 @@ public class FileHandler implements IRequestHandler {
     String[] args;
     public FileHandler(String[] args) {
         this.args = args;
+        if(args.length>=2){
+            filepath = args[1];
+        }
     }
 
     @Override
@@ -18,10 +21,7 @@ public class FileHandler implements IRequestHandler {
             return false;
         }
         System.out.println("Handled by fileHandler");
-        for(String arg : args){
-            System.out.println(arg);
-        }
-
+        System.out.println("FilePath :"+ this.filepath);
         return false;
     }
 }
