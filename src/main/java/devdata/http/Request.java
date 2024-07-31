@@ -2,6 +2,7 @@ package devdata.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class Request {
         body = "";
     }
     public void parse() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        InputStream inputStream = clientSocket.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         String nextLine = reader.readLine();
         if(nextLine == null){
@@ -51,7 +53,7 @@ public class Request {
             byte[] bodyBytes = new byte[contentLength];
             int offset = 0;
             int bytesRead;
-            while(offset<contentLength && (bytesRead = clientSocket.getInputStream().read(bodyBytes,offset, contentLength-offset)) != -1){
+            while(offset<contentLength && (bytesRead = inputStream.read(bodyBytes,offset, contentLength-offset)) != -1){
                 offset += bytesRead;
             }
             body = new String(bodyBytes);
