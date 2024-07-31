@@ -48,19 +48,11 @@ public class Request {
             System.out.println(splits[0] + " : "+splits[1]);
         }
 
-        int contentLength = Integer.parseInt(headers.getOrDefault("Content-Length","0").trim());
-        if(contentLength > 0){
-            System.out.println(contentLength);
-            byte[] bodyBytes = new byte[contentLength];
-            int offset = 0;
-            int bytesRead;
-            while(offset<contentLength && (bytesRead = inputStream.read(bodyBytes,offset, contentLength-offset)) != -1){
-                offset += bytesRead;
-                System.out.println(offset);
-            }
-            
-            body = new String(bodyBytes, StandardCharsets.UTF_8);
+        StringBuilder stringBuffer = new StringBuilder();
+        while (reader.ready()){
+            stringBuffer.append((char)reader.read());
         }
+        body = stringBuffer.toString();
         System.out.println("Body : " + body);
     }
 
