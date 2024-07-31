@@ -47,6 +47,7 @@ public class Request {
 
         int contentLength = Integer.parseInt(headers.getOrDefault("Content-Length","0"));
         if(contentLength > 0){
+            System.out.println(contentLength);
             byte[] bodyBytes = new byte[contentLength];
             int offset = 0;
             int bytesRead;
