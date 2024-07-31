@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,7 +13,7 @@ public class Main {
         serverSocket.setReuseAddress(true);
         while(true){
             Socket client = serverSocket.accept();
-            executorService.submit(new HttpHandler(client));
+            executorService.submit(new ConnectionHandler(client));
         }
      } catch (IOException e) {
          throw new RuntimeException(e);
