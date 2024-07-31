@@ -39,8 +39,9 @@ public class FileHandler implements IRequestHandler {
 
         String body = "HTTP/1.1 200 OK\r\n";
         body += "Content-Type: application/octet-stream\r\n";
-        if(request.getHeaders().getOrDefault("Accept-Encoding","").equals("gzip")){
-            body+="Content-Encoding: gzip\r\n";
+        String encodings = request.getHeaders().get("Accept-Encoding");
+        if(encodings != null && encodings.contains("gzip")){
+            body += "Content-Encoding: gzip\r\n";
         }
         body += "Content-Length: "+contents.length()+"\r\n\r\n";
 
