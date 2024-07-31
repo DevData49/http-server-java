@@ -13,12 +13,20 @@ public class UserAgentHandler implements IRequestHandler {
         }
         System.out.println("Handled by user-agent");
         String msg = request.getHeaders().getOrDefault("User-Agent", "");
-        String body = String.format(
+//      String body;
+//        = String.format(
+//
+//                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
+//
+//                msg.length(), msg);
+        String body = "HTTP/1.1 200 OK\r\n";
 
-                "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
-
-                msg.length(), msg);
-
+        if(request.getHeaders().getOrDefault("Accept-Encoding","").equals("gzip")){
+            body+="Content-Encoding: gzip\r\n";
+        }
+        body += "Content-Type: text/plain\r\n";
+        body += "Content-Length: "+msg.length()+"\r\n\r\n";
+        body += msg;
         request.write(body);
         return true;
     }

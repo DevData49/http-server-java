@@ -33,9 +33,18 @@ public class FileHandler implements IRequestHandler {
             return false;
         }
         String contents = Files.readString(filepath);
-        String body = String.format(
-                "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s",
-                contents.length(),contents);
+//        String body = String.format(
+//                "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s",
+//                contents.length(),contents);
+
+        String body = "HTTP/1.1 200 OK\r\n";
+        body += "Content-Type: application/octet-stream\r\n";
+        if(request.getHeaders().getOrDefault("Accept-Encoding","").equals("gzip")){
+            body+="Content-Encoding: gzip\r\n";
+        }
+        body += "Content-Length: "+contents.length()+"\r\n\r\n";
+
+        body += contents;
         request.write(body);
         return true;
     }
