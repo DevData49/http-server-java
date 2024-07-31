@@ -26,9 +26,10 @@ public class ConnectionHandler implements Runnable{
             IRequestHandler[] handlers = getHandlers(request,args);
             System.out.println(Arrays.toString(handlers));
             for(IRequestHandler handler:handlers){
-                System.out.println(handler);
+
                 boolean isHandled = handler.handle(request);
                 if(isHandled){
+                    System.out.println("handled by : "+handler);
                     return;
                 }
             }

@@ -29,6 +29,7 @@ public class FileHandler implements IRequestHandler {
         Path filepath = Paths.get(filedir, filename);
 
         if(!Files.exists(filepath)) {
+            System.out.println(filepath);
             return false;
         }
         String contents = Files.readString(filepath);
